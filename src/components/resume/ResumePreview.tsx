@@ -1,4 +1,3 @@
-
 import { useResume } from "@/components/ResumeContext";
 import { Button } from "@/components/ui/button";
 import { jsPDF } from "jspdf";
