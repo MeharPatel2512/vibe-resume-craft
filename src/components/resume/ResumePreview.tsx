@@ -1,7 +1,7 @@
 
 import { useResume } from "@/components/ResumeContext";
 import { Button } from "@/components/ui/button";
-import jsPDF from "jspdf";
+import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
