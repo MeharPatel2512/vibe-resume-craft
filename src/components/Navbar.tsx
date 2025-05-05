@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LogIn, User } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -80,11 +80,18 @@ const Navbar = () => {
           </Link>
         </nav>
 
-        {/* CTA Button */}
-        <div className="hidden md:block">
-          <Link to="/builder">
+        {/* Auth Buttons */}
+        <div className="hidden md:flex items-center space-x-2">
+          <Link to="/login">
+            <Button variant="ghost" className="flex items-center gap-1">
+              <LogIn className="w-4 h-4" />
+              Login
+            </Button>
+          </Link>
+          <Link to="/register">
             <Button className="primary-button">
-              Create Resume
+              <User className="w-4 h-4" />
+              Register
             </Button>
           </Link>
         </div>
@@ -106,7 +113,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div 
         className={`absolute top-full left-0 right-0 bg-white shadow-md transition-all duration-300 overflow-hidden md:hidden ${
-          mobileMenuOpen ? "max-h-64" : "max-h-0"
+          mobileMenuOpen ? "max-h-80" : "max-h-0"
         }`}
       >
         <div className="container py-4 flex flex-col space-y-3">
@@ -146,11 +153,22 @@ const Navbar = () => {
           >
             Contact
           </Link>
-          <Link to="/builder" onClick={() => setMobileMenuOpen(false)}>
-            <Button className="primary-button w-full">
-              Create Resume
-            </Button>
-          </Link>
+          <div className="border-t border-gray-100 pt-3 flex flex-col space-y-3">
+            <Link
+              to="/login"
+              className="px-4 py-2 flex items-center gap-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <LogIn className="w-4 h-4" /> Login
+            </Link>
+            <Link
+              to="/register"
+              className="primary-button mx-4 flex items-center justify-center gap-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <User className="w-4 h-4" /> Register
+            </Link>
+          </div>
         </div>
       </div>
     </header>
