@@ -9,7 +9,7 @@ interface AuthLayoutProps {
 const AuthLayout = ({ title, children }: AuthLayoutProps) => {
   return (
     <div className="container flex items-center justify-center min-h-screen py-16">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md dark:bg-gray-800 dark:border-gray-700">
         <CardHeader className="text-center">
           <CardTitle className="gradient-text text-2xl">{title}</CardTitle>
         </CardHeader>

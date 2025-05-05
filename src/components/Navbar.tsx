@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, LogIn, User } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,7 +26,7 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled ? "bg-white/90 backdrop-blur-md shadow-md py-3" : "bg-transparent py-6"
+        isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md py-3" : "bg-transparent py-6"
       }`}
     >
       <div className="container flex items-center justify-between">
@@ -43,7 +44,7 @@ const Navbar = () => {
             className={`px-4 py-2 rounded-lg transition-all ${
               isActive("/") 
                 ? "text-resume-primary font-medium" 
-                : "hover:text-resume-primary"
+                : "hover:text-resume-primary dark:hover:text-resume-primary/80"
             }`}
           >
             Home
@@ -53,7 +54,7 @@ const Navbar = () => {
             className={`px-4 py-2 rounded-lg transition-all ${
               isActive("/builder") 
                 ? "text-resume-primary font-medium" 
-                : "hover:text-resume-primary"
+                : "hover:text-resume-primary dark:hover:text-resume-primary/80"
             }`}
           >
             Resume Builder
@@ -63,7 +64,7 @@ const Navbar = () => {
             className={`px-4 py-2 rounded-lg transition-all ${
               isActive("/about") 
                 ? "text-resume-primary font-medium" 
-                : "hover:text-resume-primary"
+                : "hover:text-resume-primary dark:hover:text-resume-primary/80"
             }`}
           >
             About
@@ -73,15 +74,16 @@ const Navbar = () => {
             className={`px-4 py-2 rounded-lg transition-all ${
               isActive("/contact") 
                 ? "text-resume-primary font-medium" 
-                : "hover:text-resume-primary"
+                : "hover:text-resume-primary dark:hover:text-resume-primary/80"
             }`}
           >
             Contact
           </Link>
         </nav>
 
-        {/* Auth Buttons */}
+        {/* Auth Buttons and Theme Toggle */}
         <div className="hidden md:flex items-center space-x-2">
+          <ThemeToggle />
           <Link to="/login">
             <Button variant="ghost" className="flex items-center gap-1">
               <LogIn className="w-4 h-4" />
@@ -96,23 +98,26 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden p-2"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <div className="w-6 h-5 flex flex-col justify-between">
-            <span className={`bg-foreground h-0.5 w-full rounded-full transform transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-            <span className={`bg-foreground h-0.5 w-full rounded-full transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
-            <span className={`bg-foreground h-0.5 w-full rounded-full transform transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
-          </div>
-        </button>
+        {/* Mobile Menu Button and Theme Toggle */}
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button 
+            className="p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <div className="w-6 h-5 flex flex-col justify-between">
+              <span className={`bg-foreground dark:bg-white h-0.5 w-full rounded-full transform transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+              <span className={`bg-foreground dark:bg-white h-0.5 w-full rounded-full transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+              <span className={`bg-foreground dark:bg-white h-0.5 w-full rounded-full transform transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <div 
-        className={`absolute top-full left-0 right-0 bg-white shadow-md transition-all duration-300 overflow-hidden md:hidden ${
+        className={`absolute top-full left-0 right-0 bg-white dark:bg-gray-900 shadow-md transition-all duration-300 overflow-hidden md:hidden ${
           mobileMenuOpen ? "max-h-80" : "max-h-0"
         }`}
       >

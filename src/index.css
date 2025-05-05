@@ -115,10 +115,10 @@
   }
 
   .secondary-button {
-    @apply resume-button border-2 border-resume-primary text-resume-primary hover:bg-resume-primary hover:text-white;
+    @apply resume-button border-2 border-resume-primary text-resume-primary hover:bg-resume-primary hover:text-white dark:border-resume-primary/80 dark:text-resume-primary/80 dark:hover:bg-resume-primary/80;
   }
   
   .form-step {
-    @apply p-6 rounded-xl bg-white shadow-lg;
+    @apply p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg;
   }
 }
