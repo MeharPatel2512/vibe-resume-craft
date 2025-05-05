@@ -1,7 +1,7 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type ResumeTheme = 'modern' | 'classic' | 'creative';
+export type SectionType = 'personal' | 'experience' | 'education' | 'skills';
 
 export interface Education {
   id: string;
@@ -51,6 +51,7 @@ export interface ResumeData {
   experience: Experience[];
   skills: Skill[];
   theme: ResumeTheme;
+  sectionOrder: SectionType[];
 }
 
 const defaultResumeData: ResumeData = {
@@ -73,6 +74,7 @@ const defaultResumeData: ResumeData = {
   experience: [],
   skills: [],
   theme: 'modern',
+  sectionOrder: ['personal', 'experience', 'education', 'skills'],
 };
 
 interface ResumeContextType {
@@ -88,6 +90,7 @@ interface ResumeContextType {
   updateSkill: (skill: Skill) => void;
   removeSkill: (id: string) => void;
   updateTheme: (theme: ResumeTheme) => void;
+  updateSectionOrder: (newOrder: SectionType[]) => void;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -190,6 +193,13 @@ export const ResumeProvider = ({ children }: ResumeProviderProps) => {
     }));
   };
 
+  const updateSectionOrder = (newOrder: SectionType[]) => {
+    setResumeData((prevData) => ({
+      ...prevData,
+      sectionOrder: newOrder,
+    }));
+  };
+
   return (
     <ResumeContext.Provider
       value={{
@@ -205,6 +215,7 @@ export const ResumeProvider = ({ children }: ResumeProviderProps) => {
         updateSkill,
         removeSkill,
         updateTheme,
+        updateSectionOrder,
       }}
     >
       {children}

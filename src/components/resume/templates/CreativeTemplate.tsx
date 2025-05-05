@@ -1,9 +1,74 @@
-
-import { useResume } from "@/components/ResumeContext";
+import { useResume, SectionType } from "@/components/ResumeContext";
 
 const CreativeTemplate = () => {
   const { resumeData } = useResume();
-  const { personalInfo, education, experience, skills } = resumeData;
+  const { personalInfo, education, experience, skills, sectionOrder } = resumeData;
+
+  const renderSection = (sectionType: SectionType) => {
+    switch (sectionType) {
+      case 'personal':
+        return personalInfo.summary && (
+          <section className="mb-8">
+            <h3 className="text-lg font-bold text-[#D946EF] mb-3 uppercase relative pl-6 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-4 before:h-1 before:bg-[#D946EF]">
+              About Me
+            </h3>
+            <p className="text-gray-700">{personalInfo.summary}</p>
+          </section>
+        );
+      case 'experience':
+        return experience.length > 0 && (
+          <section className="mb-8">
+            <h3 className="text-lg font-bold text-[#D946EF] mb-4 uppercase relative pl-6 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-4 before:h-1 before:bg-[#D946EF]">
+              Experience
+            </h3>
+            
+            <div className="space-y-6">
+              {experience.map((exp) => (
+                <div key={exp.id} className="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:rounded-full before:bg-[#D946EF]">
+                  <h4 className="font-bold text-base">
+                    {exp.position} <span className="font-normal">at</span> {exp.company}
+                  </h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {new Date(exp.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
+                    {exp.current ? " Present" : 
+                     new Date(exp.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+                  </p>
+                  <p className="text-gray-700 whitespace-pre-line">{exp.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      case 'education':
+        return education.length > 0 && (
+          <section>
+            <h3 className="text-lg font-bold text-[#D946EF] mb-4 uppercase relative pl-6 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-4 before:h-1 before:bg-[#D946EF]">
+              Education
+            </h3>
+            
+            <div className="space-y-6">
+              {education.map((edu) => (
+                <div key={edu.id} className="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:rounded-full before:bg-[#D946EF]">
+                  <h4 className="font-bold text-base">{edu.school}</h4>
+                  <p className="text-[#D946EF] font-medium">
+                    {edu.degree} in {edu.fieldOfStudy}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {new Date(edu.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
+                    {new Date(edu.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+                  </p>
+                  {edu.description && <p className="text-gray-700">{edu.description}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      case 'skills':
+        return null; // Skills are displayed in the sidebar in this template
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-[297mm] bg-white font-inter text-gray-800 flex flex-col md:flex-row">
@@ -74,7 +139,7 @@ const CreativeTemplate = () => {
           </div>
         </div>
         
-        {/* Skills */}
+        {/* Skills - Always in sidebar */}
         {skills.length > 0 && (
           <div>
             <h3 className="text-lg font-bold text-[#D946EF] mb-4 uppercase">Skills</h3>
@@ -109,65 +174,8 @@ const CreativeTemplate = () => {
           </h2>
         </header>
         
-        {/* Summary */}
-        {personalInfo.summary && (
-          <section className="mb-8">
-            <h3 className="text-lg font-bold text-[#D946EF] mb-3 uppercase relative pl-6 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-4 before:h-1 before:bg-[#D946EF]">
-              About Me
-            </h3>
-            <p className="text-gray-700">{personalInfo.summary}</p>
-          </section>
-        )}
-        
-        {/* Experience */}
-        {experience.length > 0 && (
-          <section className="mb-8">
-            <h3 className="text-lg font-bold text-[#D946EF] mb-4 uppercase relative pl-6 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-4 before:h-1 before:bg-[#D946EF]">
-              Experience
-            </h3>
-            
-            <div className="space-y-6">
-              {experience.map((exp) => (
-                <div key={exp.id} className="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:rounded-full before:bg-[#D946EF]">
-                  <h4 className="font-bold text-base">
-                    {exp.position} <span className="font-normal">at</span> {exp.company}
-                  </h4>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {new Date(exp.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
-                    {exp.current ? " Present" : 
-                     new Date(exp.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </p>
-                  <p className="text-gray-700 whitespace-pre-line">{exp.description}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-        
-        {/* Education */}
-        {education.length > 0 && (
-          <section>
-            <h3 className="text-lg font-bold text-[#D946EF] mb-4 uppercase relative pl-6 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-4 before:h-1 before:bg-[#D946EF]">
-              Education
-            </h3>
-            
-            <div className="space-y-6">
-              {education.map((edu) => (
-                <div key={edu.id} className="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:rounded-full before:bg-[#D946EF]">
-                  <h4 className="font-bold text-base">{edu.school}</h4>
-                  <p className="text-[#D946EF] font-medium">
-                    {edu.degree} in {edu.fieldOfStudy}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {new Date(edu.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
-                    {new Date(edu.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </p>
-                  {edu.description && <p className="text-gray-700">{edu.description}</p>}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* Render sections in the order specified in sectionOrder */}
+        {sectionOrder.filter(section => section !== 'skills').map(section => renderSection(section))}
       </div>
     </div>
   );

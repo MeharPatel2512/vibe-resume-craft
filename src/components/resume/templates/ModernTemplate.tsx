@@ -1,13 +1,99 @@
 
-import { useResume } from "@/components/ResumeContext";
+import { useResume, SectionType } from "@/components/ResumeContext";
 
 const ModernTemplate = () => {
   const { resumeData } = useResume();
-  const { personalInfo, education, experience, skills } = resumeData;
+  const { personalInfo, education, experience, skills, sectionOrder } = resumeData;
+
+  const renderSection = (sectionType: SectionType) => {
+    switch (sectionType) {
+      case 'personal':
+        return personalInfo.summary && (
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
+              Summary
+            </h3>
+            <p className="text-sm">{personalInfo.summary}</p>
+          </section>
+        );
+      case 'experience':
+        return experience.length > 0 && (
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
+              Experience
+            </h3>
+            
+            <div className="space-y-4">
+              {experience.map((exp) => (
+                <div key={exp.id}>
+                  <div className="flex justify-between items-baseline">
+                    <h4 className="font-semibold">{exp.position}</h4>
+                    <span className="text-sm text-gray-600">
+                      {new Date(exp.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
+                      {exp.current ? " Present" : 
+                       new Date(exp.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+                    </span>
+                  </div>
+                  <p className="text-sm text-resume-primary font-medium">{exp.company}</p>
+                  <p className="text-sm mt-2 whitespace-pre-line">{exp.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      case 'education':
+        return education.length > 0 && (
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
+              Education
+            </h3>
+            
+            <div className="space-y-4">
+              {education.map((edu) => (
+                <div key={edu.id}>
+                  <div className="flex justify-between items-baseline">
+                    <h4 className="font-semibold">{edu.school}</h4>
+                    <span className="text-sm text-gray-600">
+                      {new Date(edu.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
+                      {new Date(edu.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+                    </span>
+                  </div>
+                  <p className="text-sm text-resume-primary font-medium">
+                    {edu.degree} in {edu.fieldOfStudy}
+                  </p>
+                  {edu.description && <p className="text-sm mt-1">{edu.description}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      case 'skills':
+        return skills.length > 0 && (
+          <section>
+            <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
+              Skills
+            </h3>
+            
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <div 
+                  key={skill.id}
+                  className="px-3 py-1 bg-gray-100 rounded-full text-sm"
+                >
+                  {skill.name}
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="p-8 min-h-[297mm] bg-white font-inter text-gray-800">
-      {/* Header */}
+      {/* Header - Always at the top */}
       <header className="mb-6">
         <h1 className="text-3xl font-bold text-resume-primary mb-1">
           {personalInfo.firstName} {personalInfo.lastName}
@@ -73,88 +159,8 @@ const ModernTemplate = () => {
         </div>
       </header>
       
-      {/* Summary */}
-      {personalInfo.summary && (
-        <section className="mb-6">
-          <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
-            Summary
-          </h3>
-          <p className="text-sm">{personalInfo.summary}</p>
-        </section>
-      )}
-      
-      {/* Experience */}
-      {experience.length > 0 && (
-        <section className="mb-6">
-          <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
-            Experience
-          </h3>
-          
-          <div className="space-y-4">
-            {experience.map((exp) => (
-              <div key={exp.id}>
-                <div className="flex justify-between items-baseline">
-                  <h4 className="font-semibold">{exp.position}</h4>
-                  <span className="text-sm text-gray-600">
-                    {new Date(exp.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
-                    {exp.current ? " Present" : 
-                     new Date(exp.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </span>
-                </div>
-                <p className="text-sm text-resume-primary font-medium">{exp.company}</p>
-                <p className="text-sm mt-2 whitespace-pre-line">{exp.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-      
-      {/* Education */}
-      {education.length > 0 && (
-        <section className="mb-6">
-          <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
-            Education
-          </h3>
-          
-          <div className="space-y-4">
-            {education.map((edu) => (
-              <div key={edu.id}>
-                <div className="flex justify-between items-baseline">
-                  <h4 className="font-semibold">{edu.school}</h4>
-                  <span className="text-sm text-gray-600">
-                    {new Date(edu.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - 
-                    {new Date(edu.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </span>
-                </div>
-                <p className="text-sm text-resume-primary font-medium">
-                  {edu.degree} in {edu.fieldOfStudy}
-                </p>
-                {edu.description && <p className="text-sm mt-1">{edu.description}</p>}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-      
-      {/* Skills */}
-      {skills.length > 0 && (
-        <section>
-          <h3 className="text-lg font-semibold border-b-2 border-resume-primary pb-1 mb-3">
-            Skills
-          </h3>
-          
-          <div className="flex flex-wrap gap-2">
-            {skills.map((skill) => (
-              <div 
-                key={skill.id}
-                className="px-3 py-1 bg-gray-100 rounded-full text-sm"
-              >
-                {skill.name}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Render sections in the order specified in sectionOrder */}
+      {sectionOrder.map(section => renderSection(section))}
     </div>
   );
 };
